@@ -1,7 +1,7 @@
 Module: uncommon-dylan-tests
 Copyright: See LICENSE in this distribution for details.
 
-// TODO: TESTS!
+
 
 define test test-count ()
   let seq = #[1, 2, 2, 3, 3, 3];
@@ -13,8 +13,31 @@ define test test-count ()
   assert-equal(2, count(seq, curry(\=, 3), limit: 2));
 end;
 
-define suite uncommon-dylan-tests ()
-  test test-count;
+
+//// "define enum"
+
+// minimal form, values assigned starting from 1
+define enum <error-code-a> ()
+  $parse-error-a;
+  $connection-error-a;
 end;
 
-run-test-application(uncommon-dylan-tests);
+define test test-error-code-a ()
+  assert-equal(1, enum-value($parse-error-a));
+  assert-equal(2, enum-value($connection-error-a));
+  assert-equal("$parse-error-a", enum-description($parse-error-a));
+end;
+
+// start values explicitly, they go up from there.
+define enum <error-code-b> ()
+  $parse-error-b = 0;
+  $connection-error-b = 20;
+end;
+
+// add descriptions
+define enum <error-code-c> ()
+  $parse-error-c = 0, "parse error";
+  $connection-error-c, "connection error";  
+end;
+
+run-test-application();

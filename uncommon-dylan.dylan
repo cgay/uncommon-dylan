@@ -48,6 +48,74 @@ define macro with-simple-restart
          end }
 end macro with-simple-restart;
 
+// ----------------------------------------------------------------------
+/*
+define class <enum> (<object>)
+  slot enum-value :: <integer>, required-init-keyword: value:;
+  slot enum-description :: <string>, init-keyword: description:;
+end;
+
+define enum <error-code> ()
+  $parse-error, "parse error";  // first value = 1 by default
+  20, $foo-error, "the fooest error"; // value = 20
+  $unknown, "unknown error";    // value = 21, starts from previous
+end;
+=>
+
+define class <error-code> (<enum>)
+  class slot value-to-instance :: <table> = make(<table>);
+end;
+
+define method initialize (enum :: <error-code>) => ()
+  enum.value-to-instance[enum-value(enum)] := enum;
+end;
+
+define constant $parse-error :: <error-code>
+  = make(<error-code>, description: "parse error", value: 1);
+define constant $parse-error :: <error-code>
+  = make(<error-code>, description: "the fooest error", value: 20);
+define constant $unknown-error :: <error-code>
+  = make(<error-code>, description: "unknown error", value: 21);
+
+*/
+
+define open class <enum> (<object>)
+  constant slot enum-value :: <int>, required-init-keyword: value:;
+  constant slot enum-description :: <string>, init-keyword: description:;
+  constant each-subclass slot value-to-enum :: <table> = make(<table>);
+end;
+
+define macro enum-definer
+  { define enum ?enum-class:name (/* for future expansion */) ?clauses:* end }
+    => { define class ?enum-class (<enum>) end; 
+         define method initialize (enum :: ?enum-class, #next next-method, #rest args, #key value) => ()
+           next-method();
+           enum.value-to-enum[value] := enum;
+         end;
+         define enum-constants ?enum-class ?clauses end;
+  }
+end;
+
+define macro enum-constants-definer
+  { define enum-constants ?enum-class:name end }
+    => { }
+  // just a name
+  { define enum-constants ?enum-class:name ?:name ; ?more:* end }
+    => { define enum-constants ?enum-class ?name = #f, ?"name"; ?more end }
+  // just name = value
+  { define enum-constants ?enum-class:name ?:name = ?value:expression ; ?more:* end }
+    => { define enum-constants ?enum-class ?name = ?value, ?"name"; ?more end }
+  // just name, description
+  { define enum-constants ?enum-class:name ?:name , ?description:expression ; ?more:* end }
+    => { define enum-constants ?enum-class ?name = #f, ?description; ?more end }
+  // full form: name = value, description;
+  { define enum-constants ?enum-class:name ?:name = ?value:expression , ?description:expression ; ?more:* end }
+    => { define constant ?name :: ?enum-class
+           = make(?enum-class, value: ?value, description: ?description);
+         define enum-constants ?enum-class ?more end;
+       }
+end macro;
+
 
 // ----------------------------------------------------------------------
 // define class <my-class> (<singleton-object>) ... end

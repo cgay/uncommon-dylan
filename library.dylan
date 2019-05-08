@@ -87,5 +87,9 @@ define module uncommon-utils
 
     err,
     with-restart,
-    with-simple-restart;
+    with-simple-restart,
+
+    enum-definer,
+    enum-value,
+    enum-description;
 end module uncommon-utils;
