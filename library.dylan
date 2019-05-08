@@ -29,63 +29,90 @@ define library uncommon-dylan
 end;
 
 
-// A version of common-dylan that has shorter names for some of the
-// most commonly used definitions, without loss of readability. There
-// are plenty of other long names in the dylan module, but my goal is
-// to make the most commonly used ones (<integer> being the prime
-// example) slightly less verbose.
+// A version of common-dylan that has shorter names for some of the most
+// commonly used definitions, without loss of readability, I hope. There are
+// plenty of other long names in the dylan module, but my intent is to make the
+// most commonly used ones (<integer> and false-or(<integer>) being the prime
+// examples) slightly less verbose.
 define module uncommon-dylan
   use common-dylan,
     rename: { <boolean>   => <bool>,
               <character> => <char>,
               <function>  => <func>,
-              <integer>   => <int>,
+              <integer>   => <int>, // see other integer types exported below
               <sequence>  => <seq>,
-              concatenate    => concat },
+              concatenate => concat },
     export: all;
   use table-extensions,
     rename: { <case-insensitive-string-table> => <istring-table> },
     export: all;
+
+  // Additional numeric types.
+  export
+    <int>?,                     // false-or(<int>)
+    <uint>,                     // min: 0
+    <uint+>,                    // min: 1
+    <uint>?,                    // false-or(<uint>)
+    <uint+>?;                   // false-or(<uint+>)
+
+  // Collections
+  export
+    remove-keys,        // For removing keywords from #rest arglists.
+    value-sequence,     // Complement to key-sequence. Is this just curry(map, identity)?
+                        // It should only be defined on <explicit-key-collection>.
+    count,
+    slice,
+    elt;
+
+  // Odds and ends
+  export
+    iff,               // iff(test, true, false)
+    <singleton-object>,
+    inc!,              // like ++foo
+    dec!;              // like --foo
+
+  // Conditions
+  export
+    raise,
+    with-restart,
+    with-simple-restart;
+
 end module uncommon-dylan;
 
-// Utilities
+// Things that are more experimental. If they prove useful enough, move them to
+// uncommon-dylan.
 define module uncommon-utils
   use collection-utilities,
-    export: all;
+    export: all;                // yuck. export things explicitly.
   use uncommon-dylan;
   use streams,
     import: { write,
               with-output-to-string };
 
   export
-    iff,               // iff(test, true, false)
-    <singleton-object>,
     string-to-float,
     // Wasn't sure whether to include this, since FunDev already has
     // float-to-string, but decided to keep it with a different name.
     // --cgay
-    float-to-formatted-string,
-    remove-keys,        // For removing keywords from #rest arglists.
-    value-sequence,
-    count,
+    float-to-formatted-string;
 
-    inc!,              // like ++foo
-    dec!,              // like --foo
-
+  // Trie
+  export
     <string-trie>,
     find-object,
     add-object,
     remove-object,
     trie-children,
     trie-object,
-    <trie-error>,
+    <trie-error>;
 
-    <int*>, <int+>,
-
-    slice,
-    elt,
-
-    err,
-    with-restart,
-    with-simple-restart;
+  // enums
+/*
+  export
+    <enum>,
+    by-value,
+    enum-definer,
+    enum-value,
+    enum-description;
+*/
 end module uncommon-utils;
