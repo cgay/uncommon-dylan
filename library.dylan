@@ -107,12 +107,7 @@ define module uncommon-utils
     <trie-error>;
 
   // enums
-/*
   export
-    <enum>,
-    by-value,
     enum-definer,
-    enum-value,
-    enum-description;
-*/
+    <enum-error>;
 end module uncommon-utils;
