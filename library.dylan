@@ -108,6 +108,5 @@ define module uncommon-utils
 
   // enums
   export
-    enum-definer,
-    <enum-error>;
+    enum-definer;
 end module uncommon-utils;
