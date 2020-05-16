@@ -10,10 +10,8 @@ Copyright: See LICENSE in this distribution for details.
 // Simple type defs
 
 define constant <uint>   = limited(<int>, min: 0);
-define constant <uint+>  = limited(<int>, min: 1);
 define constant <int>? = false-or(<int>);
 define constant <uint>? = false-or(<uint>);
-define constant <uint+>? = false-or(<uint+>);
 
 // ----------------------------------------------------------------------
 // iff(test, true-part)
@@ -169,8 +167,7 @@ define open generic count
  => (count :: <int>);
 
 define method count
-    (collection :: <collection>, predicate :: <func>,
-     #key limit :: false-or(<int>))
+    (collection :: <collection>, predicate :: <func>, #key limit :: <int>?)
  => (count :: <int>)
   let count :: <int> = 0;
   for (item in collection,
@@ -192,28 +189,4 @@ define method slice
     (seq :: <seq>, bpos :: <uint>, epos :: <uint>?)
  => (slice :: <seq>)
   copy-sequence(seq, start: bpos, end: epos | seq.size)
-end;
-
-// One of my least favorite things in Dylan is having to switch from c[i] syntax to
-// element(c, i, default: d). "elt" is perhaps short enough that I can just use it all the
-// time instead of c[i] syntax. That's the problem I would like to solve, but I'm not wild
-// about the name "elt".
-//
-// See also, https://opendylan.org/proposals/dep-0010-element-otherwise.html
-define macro elt
-  { elt(?c:expression, ?k:expression, #key ?or:expression) }
-    =>
-  { element(?c, ?k, default: ?or) }
-end;
-
-
-// Raise is like signal but doesn't have the strange dual parameter list interpretation.
-// It always makes the error class explicit but is more concise because it's not necessary
-// to use keyword args. It's relatively rare to need to re-signal a condition, but if that
-// happens just call signal instead of this.
-define function raise
-    (class :: subclass(<condition>), message :: <string>, #rest args)
-  signal(make(class,
-              format-string: message,
-              format-arguments: args));
 end;
