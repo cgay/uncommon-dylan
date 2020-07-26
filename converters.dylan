@@ -1,4 +1,4 @@
-Module: uncommon-utils
+Module: uncommon-utils-internal
 
 // ----------------------------------------------------------------------
 // Convert a string to a floating point number.

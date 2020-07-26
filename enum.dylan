@@ -1,4 +1,4 @@
-Module: uncommon-utils
+Module: uncommon-utils-internal
 
 // A simple 'define enum' macro that provides
 //   * a type to dispatch on
@@ -6,8 +6,6 @@ Module: uncommon-utils
 //   * a name associated with each enum value
 //   * no need to use symbols (i.e., leaky abstraction)
 
-// Motivation
-//
 // There's a Dylan pattern of using a set of symbols like #"passed", #"failed",
 // #"skipped" for what in other languages would be an enum. Using symbols like
 // this creates a leaky abstraction which can result in developers or users of
@@ -21,33 +19,8 @@ Module: uncommon-utils
 // In addition to all that you're likely to want to define a type union that
 // includes all of the symbols so that you can dispatch on it.
 //
-//
-// Implementation Notes
-//
-// 1. We rely on the compiler to generate warnings for duplicate enum clause
-//    names. This should work fine because each clause defines its own
-//    constant.
-//
-// 2. I wanted to make 'define enum' look like this:
-//
-//       define enum <result> () passed; failed; skipped; end
-//
-//    rather than the current syntax:
-//
-//       define enum <result> () $result-passed; $result-failed; $result-skipped; end
-//
-//    But it turns out that there's a limitation in Dylan macros that prevents the
-//    more concise syntax from working if I want the generated constant names to
-//    look like $result-foo: you can only use ## concatenation with
-//
-//       LITERAL-STRING ## NAME ## LITERAL-STRING
-//
-//    and apparently only a maximum of two ##'s strung together, so this won't work:
-//
-//       "$" ## ?enum-class-name ## "-" ## ?enum-value-name
-//
-//    I was unable to find a way to work around this.
-
+// We rely on the compiler to generate warnings for duplicate enum clause
+// names since each clause defines its own constant.
 
 define macro enum-definer
   { define enum "<" ## ?enum-name:name ## ">" ()

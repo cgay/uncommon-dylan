@@ -1,6 +1,4 @@
 Module: uncommon-dylan-test-suite
-Copyright: See LICENSE in this distribution for details.
-
 
 
 define test test-count ()
@@ -13,6 +11,15 @@ define test test-count ()
   assert-equal(2, count(seq, curry(\=, 3), limit: 2));
 end;
 
+
+define test test-ash<< ()
+  // Shouldn't be able to pass a negative count.
+  assert-signals(<error>, ash<<(1, -1));
+  assert-signals(<error>, ash>>(1, -1));
+
+  assert-equal(ash<<(1, 3), ash(1, 3));
+  assert-equal(ash>>(1, 3), ash(1, -3));
+end;
 
 //// "define enum"
 /*

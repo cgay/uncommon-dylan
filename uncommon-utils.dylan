@@ -1,10 +1,5 @@
-Module:   uncommon-dylan
-Synopsis: Some definitions of general use that could be considered for
-          inclusion in common-dylan if they stand the test of time.
-Copyright: See LICENSE in this distribution for details.
+Module:   uncommon-utils-internal
 
-// TODO(cgay): document the reasons why I think some of these (e.g., iff)
-// are useful.
 
 // ----------------------------------------------------------------------
 // Simple type defs
@@ -90,6 +85,20 @@ define macro dec!
 end macro dec!;
 
 
+// ----------------------------------------------------------------------
+// ASH with explicit direction. Specifying direction via a negative count
+// may be traditional but it's pretty opaque.
+
+define inline function ash<<
+    (i :: <int>, count :: <int>) => (_ :: <int>)
+  ash(i, count)
+end function;
+
+define inline function ash>>
+    (i :: <int>, count :: <int>) => (_ :: <int>)
+  ash(i, - count)
+end function;
+
 // TODO:
 //   as(<int>, "123")
 //   as(<single-float>, "123.0")
@@ -148,12 +157,7 @@ end;
 // A complement to key-sequence
 define method value-sequence
     (collection :: <explicit-key-collection>) => (seq :: <seq>)
-  let v :: <vector> = make(<vector>, size: collection.size);
-  for (val keyed-by key in collection,
-       i from 0)
-    v[i] := val;
-  end;
-  v
+  map-as(<vector>, identity, collection)
 end;
 
 // copy-table? copy-table-as?

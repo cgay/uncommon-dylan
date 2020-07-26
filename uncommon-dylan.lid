@@ -1,6 +1,6 @@
 library: uncommon-dylan
 files: library
-       uncommon-dylan
+       uncommon-utils
        enum
        trie
        converters

@@ -23,6 +23,7 @@ define library uncommon-dylan
               transcendentals };
   use io,
     import: { streams };
+
   export
     uncommon-dylan,
     uncommon-utils;
@@ -46,50 +47,36 @@ define module uncommon-dylan
   use table-extensions,
     rename: { <case-insensitive-string-table> => <istring-table> },
     export: all;
+end module uncommon-dylan;
 
+
+define module uncommon-utils
   // Additional numeric types.
-  export
+  create
     <int>?,                     // false-or(<int>)
     <uint>,                     // min: 0
-    <uint+>,                    // min: 1
-    <uint>?,                    // false-or(<uint>)
-    <uint+>?;                   // false-or(<uint+>)
+    <uint>?;                    // false-or(<uint>)
 
   // Collections
-  export
+  create
     remove-keys,        // For removing keywords from #rest arglists.
-    value-sequence,     // Complement to key-sequence. Is this just curry(map, identity)?
-                        // It should only be defined on <explicit-key-collection>.
+    value-sequence,     // Complement to key-sequence. 
     count,
-    slice,
-    elt;
+    slice;
 
   // Odds and ends
-  export
-    iff,               // iff(test, true, false)
+  create
+    iff,                        // iff(test, true, false)
     <singleton-object>,
-    inc!,              // like ++foo
-    dec!;              // like --foo
+    inc!, dec!,                 // like foo++ foo--
+    ash<<, ash>>;
 
   // Conditions
-  export
-    raise,
+  create
     with-restart,
     with-simple-restart;
 
-end module uncommon-dylan;
-
-// Things that are more experimental. If they prove useful enough, move them to
-// uncommon-dylan.
-define module uncommon-utils
-  use collection-utilities,
-    export: all;                // yuck. export things explicitly.
-  use uncommon-dylan;
-  use streams,
-    import: { write,
-              with-output-to-string };
-
-  export
+  create
     string-to-float,
     // Wasn't sure whether to include this, since FunDev already has
     // float-to-string, but decided to keep it with a different name.
@@ -97,7 +84,7 @@ define module uncommon-utils
     float-to-formatted-string;
 
   // Trie
-  export
+  create
     <string-trie>,
     find-object,
     add-object,
@@ -107,6 +94,14 @@ define module uncommon-utils
     <trie-error>;
 
   // enums
-  export
+  create
     enum-definer;
 end module uncommon-utils;
+
+define module uncommon-utils-internal
+  use uncommon-dylan;
+  use uncommon-utils;
+  use streams,
+    import: { write,
+              with-output-to-string };
+end module;

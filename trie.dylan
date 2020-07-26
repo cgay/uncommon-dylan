@@ -1,4 +1,4 @@
-Module: uncommon-utils
+Module: uncommon-utils-internal
 
 //// Tries whose keys are strings
 
