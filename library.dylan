@@ -66,10 +66,12 @@ define module uncommon-utils
 
   // Odds and ends
   create
+    ash<<, ash>>;
+
+  create
     iff,                        // iff(test, true, false)
     <singleton-object>,
-    inc!, dec!,                 // like foo++ foo--
-    ash<<, ash>>;
+    inc!, dec!;                 // like foo++ foo--
 
   // Conditions
   create
@@ -95,7 +97,7 @@ define module uncommon-utils
 
   // enums
   create
-    enum-definer;
+    \enum-definer;
 end module uncommon-utils;
 
 define module uncommon-utils-internal

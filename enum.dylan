@@ -34,17 +34,17 @@ define macro enum-definer
              constant slot ?enum-name ## "-name" :: <string>, required-init-keyword: name:;
          end;
 
-         define enum-constants "<" ## ?enum-name ## ">", ?clauses end;
+         define enum-constants "<" ## ?enum-name ## ">" ?clauses end;
        }
 end macro;
 
 define macro enum-constants-definer
   { define enum-constants ?class:name end } => { }
 
-  { define enum-constants ?class:name, ?:name;
+  { define enum-constants ?class:name ?:name;
       ?more:* 
     end }
     => { define constant ?name :: ?class = make(?class, name: ?"name");
-         define enum-constants ?class, ?more end;
+         define enum-constants ?class ?more end;
        }
 end macro;

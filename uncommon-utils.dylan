@@ -1,4 +1,4 @@
-Module:   uncommon-utils-internal
+Module: uncommon-utils-internal
 
 
 // ----------------------------------------------------------------------
@@ -91,11 +91,17 @@ end macro dec!;
 
 define inline function ash<<
     (i :: <int>, count :: <int>) => (_ :: <int>)
+  if (count < 0)
+    error("invalid negative count %d passed to ash<<", count);
+  end;
   ash(i, count)
 end function;
 
 define inline function ash>>
     (i :: <int>, count :: <int>) => (_ :: <int>)
+  if (count < 0)
+    error("invalid negative count %d passed to ash>>", count);
+  end;
   ash(i, - count)
 end function;
 
