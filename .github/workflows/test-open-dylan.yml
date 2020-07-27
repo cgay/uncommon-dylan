@@ -31,3 +31,5 @@ jobs:
         tar xfj opendylan.tar.bz2
         sudo apt install libgc-dev libunwind-dev
         ls -l
+        opendylan-2019.1/bin/dylan-compiler -build -clean tests/uncommon-dylan-test-suite.lid
+        _build/bin/uncommon-dylan-test-suite
