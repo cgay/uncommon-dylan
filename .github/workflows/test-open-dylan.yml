@@ -25,6 +25,8 @@ jobs:
     # Runs a single command using the runners shell
     - name: Install Open Dylan
       run: |
+        cd $GITHUB_WORKSPACE
+        pwd
         curl -o opendylan.tar.bz2 https://opendylan.org/downloads/opendylan/2019.1/opendylan-2019.1-x86_64-linux.tar.bz2
         tar xfj opendylan.tar.bz2
         sudo apt install libgc-dev libunwind-dev
