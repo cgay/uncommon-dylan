@@ -8,7 +8,7 @@ define test test-count ()
   assert-equal(1, count(seq, curry(\=, 1)));
   assert-equal(2, count(seq, curry(\=, 2)));
   assert-equal(3, count(seq, curry(\=, 3)));
-  assert-equal(2, count(seq, curry(\=, 3), limit: 2));
+  assert-equal(5, count(seq, curry(\=, 3), limit: 2));
 end;
 
 
