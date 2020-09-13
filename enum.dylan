@@ -26,12 +26,12 @@ Module: uncommon-utils-internal
 // With more options. Note that if you need for the values to remain constant
 // across addition/removal of enum values you may assign a specific value:
 //
-//   define enum <test-result> (strip-prefix: "$color-")
+//   define enum <test-result> ()
 //     $color-red;
 //     $color-green = 4;
 //     ...
 //   end;
-//   assert-equal(test-result-name($color-red), "red");  // "$color-" stripped from name
+//   assert-equal(test-result-name($color-red), "red");
 //   assert-equal(test-result-value($color-red), 1);
 //
 // Duplication of names or values is an error:
