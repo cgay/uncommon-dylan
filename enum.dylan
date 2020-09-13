@@ -62,10 +62,19 @@ end macro;
 define macro enum-constants-definer
   { define enum-constants ?class:name, ?value:expression end } => { }
 
+  // clause is `$foo;`
   { define enum-constants ?class:name, ?value:expression, ?:name;
       ?more:* 
     end }
     => { define constant ?name :: ?class = make(?class, name: ?"name", value: ?value);
          define enum-constants ?class, ?value + 1, ?more end;
+       }
+
+  // clause is `$foo = n;`
+  { define enum-constants ?class:name, ?:expression, ?:name = ?actual-value:expression;
+      ?more:*
+    end }
+    => { define constant ?name :: ?class = make(?class, name: ?"name", value: ?actual-value);
+         define enum-constants ?class, ?actual-value + 1, ?more end;
        }
 end macro;

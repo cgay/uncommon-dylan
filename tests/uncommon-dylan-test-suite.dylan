@@ -40,5 +40,18 @@ define test test-simple-enum ()
   assert-equal(test-simple-enum-value($charlie), 3);
 end;
 
+define enum <test-enum-values> ()
+  $value-one = 100;
+  $value-two;                   // 101
+  $value-three = 300;
+  $value-four;                  // 301
+end;
+
+define test test-enum-values ()
+  assert-equal(test-enum-values-value($value-one), 100);
+  assert-equal(test-enum-values-value($value-two), 101);
+  assert-equal(test-enum-values-value($value-three), 300);
+  assert-equal(test-enum-values-value($value-four), 301);
+end;
 
 run-test-application();
