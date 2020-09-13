@@ -8,7 +8,6 @@ define test test-count ()
   assert-equal(1, count(seq, curry(\=, 1)));
   assert-equal(2, count(seq, curry(\=, 2)));
   assert-equal(3, count(seq, curry(\=, 3)));
-  assert-equal(555, count(seq, curry(\=, 3), limit: 2));
 end;
 
 
@@ -22,28 +21,24 @@ define test test-ash<< ()
 end;
 
 //// "define enum"
-/*
-define enum <error-type> ()
-  $parse-error = 1;
-  $unbound-variable-error = 2;
+
+define enum <test-simple-enum> ()
+  $alpha; $bravo; $charlie;
 end;
 
-define test test-error-type ()
-  assert-equal(1, enum-value($parse-error));
-  assert-equal(2, enum-value($unbound-variable-error));
-  assert-equal("$parse-error :: <error-type>", enum-description($parse-error));
+define test test-simple-enum ()
+  assert-instance?(<test-simple-enum>, $alpha);
+  assert-equal(test-simple-enum-name($alpha), "$alpha");
+  assert-equal(test-simple-enum-value($alpha), 1);
+
+  assert-instance?(<test-simple-enum>, $bravo);
+  assert-equal(test-simple-enum-name($bravo), "$bravo");
+  assert-equal(test-simple-enum-value($bravo), 2);
+
+  assert-instance?(<test-simple-enum>, $charlie);
+  assert-equal(test-simple-enum-name($charlie), "$charlie");
+  assert-equal(test-simple-enum-value($charlie), 3);
 end;
 
-// start values explicitly, they go up from there.
-define enum <error-code-b> ()
-  $parse-error-b = 0;
-  $connection-error-b = 20;
-end;
 
-// add descriptions
-define enum <error-code-c> ()
-  $parse-error-c = 0, "parse error";
-  $connection-error-c, "connection error";  
-end;
-*/
 run-test-application();
