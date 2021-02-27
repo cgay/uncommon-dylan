@@ -44,6 +44,11 @@ define module uncommon-dylan
               <sequence>  => <seq>,
               concatenate => concat },
     export: all;
+  use byte-vector, export: all;
+  use simple-format, export: all;
+  use simple-profiling, export: all;
+  use simple-random, export: all;
+  use simple-timers, export: all;
   use table-extensions,
     rename: { <case-insensitive-string-table> => <istring-table> },
     export: all;
