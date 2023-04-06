@@ -74,7 +74,8 @@ define module uncommon-utils
     ash<<, ash>>;
 
   create
-    iff,                        // iff(test, true, false)
+    cond,                       // cond(test, true [, false])
+    iff,                        // DEPRECATED - use cond instead
     <singleton-object>,
     inc!, dec!;                 // like foo++ foo--
 
