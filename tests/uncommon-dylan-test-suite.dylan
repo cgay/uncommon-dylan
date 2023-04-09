@@ -54,4 +54,14 @@ define test test-enum-values ()
   assert-equal(test-enum-values-value($value-four), 301);
 end;
 
+define test test-cond ()
+  assert-true(cond(#t, #t, #f));
+  assert-true(cond(#t, #t));
+  assert-true(cond(#f, #f, #t));
+
+  assert-false(cond(#f, #t, #f));
+  assert-false(cond(#f, #t));
+  assert-false(cond(#t, #f, #t));
+end test;
+
 run-test-application();

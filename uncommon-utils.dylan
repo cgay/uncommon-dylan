@@ -9,9 +9,8 @@ define constant <int>? = false-or(<int>);
 define constant <uint>? = false-or(<uint>);
 
 // ----------------------------------------------------------------------
-// iff(test, true-part)
-// iff(test, true-part, false-part)
-//
+
+// DEPRECATED -- use cond instead
 define macro iff
     { iff(?test:expression, ?true:expression, ?false:expression) }
  => { if (?test) ?true else ?false end }
@@ -20,6 +19,27 @@ define macro iff
  => { if (?test) ?true end }
 end;
 
+// `cond` is a replacement for `if` expressions which uses fewer lines when
+// there's only a single expression in both the true and false branches.
+// Instead of this:
+//   if (test)
+//     something()
+//   else
+//     something-else()
+//   end
+// write this with cond:
+//   cond(test, something(), something-else())
+// or if the true/false parts are longer,
+//   cond(test,
+//        something-or-other(),
+//        something-else-or-other())
+define macro cond
+    { cond(?test:expression, ?true:expression, ?false:expression) }
+ => { if (?test) ?true else ?false end }
+
+    { cond(?test:expression, ?true:expression) }
+ => { if (?test) ?true end }
+end macro;
 
 // ----------------------------------------------------------------------
 define macro with-restart
