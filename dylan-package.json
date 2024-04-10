@@ -4,5 +4,7 @@
     "version": "0.3.0",
     "dependencies": [],
     "dev-dependencies": [ "testworks" ],
-    "url": "https://github.com/cgay/uncommon-dylan"
+    "url": "https://github.com/cgay/uncommon-dylan",
+    "license": "MIT",
+    "license-url": "https://opensource.org/license/mit"
 }

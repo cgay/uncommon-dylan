@@ -34,9 +34,9 @@ jobs:
 
       - name: Run test suite
         run: |
-          _build/bin/uncommon-dylan-test-suite --report surefire --report-file uncommon-dylan-tests.xml
+          _build/bin/uncommon-dylan-test-suite --report surefire --report-file _build/uncommon-dylan-tests.xml
 
-      - name: Publish Test Report
+      - name: Publish test report
         if: success() || failure()
         uses: mikepenz/action-junit-report@v4
         with:
