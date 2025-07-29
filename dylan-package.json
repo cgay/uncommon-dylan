@@ -1,6 +1,6 @@
 {
     "name": "uncommon-dylan",
-    "description": "Utilities plus an alternative dylan base package",
+    "description": "General purpose utilities and a drop-in replacement for the common-dylan module which uses shorter names.",
     "version": "0.3.0",
     "dependencies": [],
     "dev-dependencies": [ "testworks" ],
