@@ -3,6 +3,7 @@ Synopsis: Some definitions of general use that could be considered for
           inclusion in common-dylan if they stand the test of time.
 Copyright: See LICENSE in this distribution for details.
 
+
 define library uncommon-dylan
   use collections,
     import: { table-extensions };

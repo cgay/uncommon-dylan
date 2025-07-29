@@ -63,5 +63,3 @@ define test test-cond ()
   assert-false(cond(#f, #t));
   assert-false(cond(#t, #f, #t));
 end test;
-
-run-test-application();
