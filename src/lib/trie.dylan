@@ -1,4 +1,4 @@
-Module: uncommon-utils-internal
+Module: uncommon-utils-impl
 
 //// Tries whose keys are strings
 
@@ -35,7 +35,7 @@ define method add-object
             end if;
           else
             let first-path = rest-path[0];
-            let other-path = slice(rest-path, 1, #f);
+            let other-path = copy-seq(rest-path, start: 1);
             let children = trie-children(trie);
             let child = element(children, first-path, default: #f);
             unless (child)

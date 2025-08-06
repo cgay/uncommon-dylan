@@ -1,4 +1,4 @@
-Module: uncommon-utils-internal
+Module: uncommon-utils-impl
 
 // A simple 'define enum' macro that provides
 //   * a type to dispatch on

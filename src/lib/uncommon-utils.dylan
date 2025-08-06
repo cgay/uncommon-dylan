@@ -1,43 +1,49 @@
-Module: uncommon-utils-internal
+Module: uncommon-utils-impl
 
 
 // ----------------------------------------------------------------------
-// Simple type defs
 
-define constant <uint>   = limited(<int>, min: 0);
-define constant <int>? = false-or(<int>);
-define constant <uint>? = false-or(<uint>);
+// Similar to definitions in brevity.dylan, but for which there are no equivalents in the
+// dylan module.
+
+define constant <uint>    = limited(<int>, min: 0);
+define constant <uint?>   = false-or(<uint>);
+define function uint? (object) => (bool :: <bool>) instance?(object, <uint>) end;
 
 // ----------------------------------------------------------------------
 
-// DEPRECATED -- use cond instead
-define macro iff
-    { iff(?test:expression, ?true:expression, ?false:expression) }
- => { if (?test) ?true else ?false end }
+// Like prog1 in Common lisp, return the value of the first expression.
+define macro begin1
+    { begin1 ?exp1:expression ?:body end }
+ => { let result = ?exp1; ?body; result }
+end macro;
 
-    { iff(?test:expression, ?true:expression) }
- => { if (?test) ?true end }
-end;
+// ----------------------------------------------------------------------
 
-// `cond` is a replacement for `if` expressions which uses fewer lines when
-// there's only a single expression in both the true and false branches.
+// `iff` is a replacement for `if` expressions which reduces verbosity and increases
+// readability compared to the built-in `if` statement when used for very short
+// conditionals.  Essentially it removes the need for the `else` and `end` lines of a
+// standard `if` when spread across multiple lines, and increases readability compared to
+// standard `if` when on one line.  (This is all, of course, a matter of opinion.)
+//
 // Instead of this:
 //   if (test)
 //     something()
 //   else
 //     something-else()
 //   end
-// write this with cond:
-//   cond(test, something(), something-else())
+// write this with iff:
+//   iff(test, something(), something-else())
 // or if the true/false parts are longer,
-//   cond(test,
-//        something-or-other(),
-//        something-else-or-other())
-define macro cond
-    { cond(?test:expression, ?true:expression, ?false:expression) }
+//   iff(test,
+//       something-or-other(),
+//       something-else-or-other())
+//
+define macro iff
+    { iff(?test:expression, ?true:expression, ?false:expression) }
  => { if (?test) ?true else ?false end }
 
-    { cond(?test:expression, ?true:expression) }
+    { iff(?test:expression, ?true:expression) }
  => { if (?test) ?true end }
 end macro;
 
@@ -90,6 +96,7 @@ end;
 
 
 // ----------------------------------------------------------------------
+
 define macro inc!
   { inc! (?place:expression, ?dx:expression) }
     => { ?place := ?place + ?dx; }
@@ -108,96 +115,27 @@ end macro dec!;
 // ----------------------------------------------------------------------
 // ASH with explicit direction. Specifying direction via a negative count
 // may be traditional but it's pretty opaque.
+//
+// (What about adding << and >> operators to Open Dylan?)
 
 define inline function ash<<
-    (i :: <int>, count :: <int>) => (_ :: <int>)
-  if (count < 0)
-    error("invalid negative count %d passed to ash<<", count);
-  end;
+    (i :: <int>, count :: <uint>) => (_ :: <int>)
   ash(i, count)
 end function;
 
 define inline function ash>>
-    (i :: <int>, count :: <int>) => (_ :: <int>)
-  if (count < 0)
-    error("invalid negative count %d passed to ash>>", count);
-  end;
+    (i :: <int>, count :: <uint>) => (_ :: <int>)
   ash(i, - count)
 end function;
-
-// TODO:
-//   as(<int>, "123")
-//   as(<single-float>, "123.0")
-//   as(<double-float>, "123.0")
-//   The equivalent works in Python, so why not Dylan?  The options
-//   in string-to-integer, for example, are just difficult to program
-//   around when you want to know if the string you have your hands on
-//   can be converted to an integer.  Skipping initial whitespace feels
-//   like featuritis.  I'm guessing it came from CL.
-//
-//   Semi-related, I would like all such built-in converters to raise
-//   <value-error> (better name?) instead of just <error>.
-
-
-// ----------------------------------------------------------------------
-// For removing certain keyword/value pairs from argument lists before
-// passing them along with apply or next-method.
-//
-define method remove-keys
-    (arglist :: <seq>, #rest keys-to-remove) => (x :: <list>)
-  let result :: <list> = #();
-  let last-pair = #f;
-  for (i from 0 below arglist.size by 2)
-    let arg = arglist[i];
-    if (~member?(arg, keys-to-remove))
-      if (last-pair)
-        let key-val = list(arg, arglist[i + 1]);
-        tail(last-pair) := key-val;
-        last-pair := tail(key-val);
-      else
-        result := list(arg, arglist[i + 1]);
-        last-pair := tail(result);
-      end;
-    end;
-  end;
-  result
-end method remove-keys;
-
-
-// ----------------------------------------------------------------------
-// Seems like this should be in the core language.
-//
-// TODO: handle standard prefixes for other radices: 0b, 0, 0x
-// TODO: DON'T skip initial whitespace or allow other cruft at end,
-//       like string-to-integer does.
-// TODO: DO raise a better error type.
-//
-define sideways method as
-    (type == <int>, value :: <string>) => (i :: <int>)
-  string-to-integer(value)
-end;
 
 // ----------------------------------------------------------------------
 // Collections
 
-// A complement to key-sequence
-define method value-sequence
-    (collection :: <explicit-key-collection>) => (seq :: <seq>)
-  map-as(<vector>, identity, collection)
-end;
-
-// copy-table? copy-table-as?
-
-// Count the number of occurrences of item in collection, as determined
-// by the predicate.  'limit' is an efficiency hack: stop counting when limit
-// is reached, the theory being that it's common to want to know if there's
-// more than one of the given item.
-define open generic count
-    (collection :: <collection>, predicate :: <func>, #key limit)
- => (count :: <int>);
-
-define method count
-    (collection :: <collection>, predicate :: <func>, #key limit :: <int>?)
+// Count the number of occurrences of item in collection, as determined by the predicate.
+// 'limit' is an efficiency hack: stop counting when limit is reached, the idea being
+// that you might want to know if there's more than one of the given item.
+define function count
+    (collection :: <collection>, predicate :: <func>, #key limit :: <int?>)
  => (count :: <int>)
   let count :: <int> = 0;
   for (item in collection,
@@ -207,16 +145,4 @@ define method count
     end;
   end;
   count
-end method count;
-
-//// Collection functions
-
-// TODO: slice! and slice!-setter ?
-// TODO: make slice a macro so slice(s, b) and slice(s, b, e) work?
-// TODO: write a dep for slice notation?  s[s:b] ?
-
-define method slice
-    (seq :: <seq>, bpos :: <uint>, epos :: <uint>?)
- => (slice :: <seq>)
-  copy-sequence(seq, start: bpos, end: epos | seq.size)
-end;
+end function;
