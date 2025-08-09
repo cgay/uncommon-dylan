@@ -66,7 +66,8 @@ define module uncommon-utils
 
   // enums
   create
-    enum-definer;
+    enum-definer,
+    enum-class-definer;
 
   // Conditions
   create

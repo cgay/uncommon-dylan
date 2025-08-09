@@ -1,4 +1,5 @@
 library: uncommon-dylan-test-suite
+target-type: dll
 files: library
-       test-enum
+       enum-tests
        uncommon-dylan-test-suite

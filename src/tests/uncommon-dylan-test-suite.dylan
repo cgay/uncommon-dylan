@@ -20,40 +20,6 @@ define test test-ash<< ()
   assert-equal(ash>>(1, 3), ash(1, -3));
 end;
 
-//// "define enum"
-
-define enum <test-simple-enum> ()
-  $alpha; $bravo; $charlie;
-end;
-
-define test test-simple-enum ()
-  assert-instance?(<test-simple-enum>, $alpha);
-  assert-equal(test-simple-enum-name($alpha), "$alpha");
-  assert-equal(test-simple-enum-value($alpha), 1);
-
-  assert-instance?(<test-simple-enum>, $bravo);
-  assert-equal(test-simple-enum-name($bravo), "$bravo");
-  assert-equal(test-simple-enum-value($bravo), 2);
-
-  assert-instance?(<test-simple-enum>, $charlie);
-  assert-equal(test-simple-enum-name($charlie), "$charlie");
-  assert-equal(test-simple-enum-value($charlie), 3);
-end;
-
-define enum <test-enum-values> ()
-  $value-one = 100;
-  $value-two;                   // 101
-  $value-three = 300;
-  $value-four;                  // 301
-end;
-
-define test test-enum-values ()
-  assert-equal(test-enum-values-value($value-one), 100);
-  assert-equal(test-enum-values-value($value-two), 101);
-  assert-equal(test-enum-values-value($value-three), 300);
-  assert-equal(test-enum-values-value($value-four), 301);
-end;
-
 define test test-iff ()
   assert-true(iff(#t, #t, #f));
   assert-true(iff(#t, #t));
