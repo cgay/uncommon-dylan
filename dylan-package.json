@@ -3,7 +3,10 @@
     "description": "General purpose utilities and a drop-in replacement for the common-dylan module which uses shorter names.",
     "version": "0.3.0",
     "dependencies": [],
-    "dev-dependencies": [ "testworks" ],
+    "dev-dependencies": [
+        "sphinx-extensions",
+        "testworks"
+    ],
     "url": "https://github.com/cgay/uncommon-dylan",
     "license": "MIT",
     "license-url": "https://opensource.org/license/mit"
