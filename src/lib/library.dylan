@@ -22,9 +22,6 @@ define library uncommon-dylan
               simple-timers,
               streams-protocol,
               transcendentals };
-  use io,
-    import: { streams };
-
   export
     uncommon-brevity,
     uncommon-dylan,
@@ -45,7 +42,8 @@ define module uncommon-utils
     <singleton-object>,
     inc!, dec!;                 // like foo++ foo--
 
-  // Trie
+  // Trie - a mutable explicit key collection without a forward-iteration-protocol
+  //        because it would be very inefficient.
   create
     <trie>,
       <object-trie>,
@@ -148,11 +146,6 @@ define module uncommon-utils-impl
 
   use uncommon-brevity;
   use uncommon-utils;
-
-  // TODO: still needed?
-  use streams,
-    import: { write,
-              with-output-to-string };
 
   use byte-vector;
   use table-extensions;

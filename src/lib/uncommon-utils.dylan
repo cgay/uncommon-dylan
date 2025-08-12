@@ -4,11 +4,13 @@ Module: uncommon-utils-impl
 // ----------------------------------------------------------------------
 
 // Similar to definitions in brevity.dylan, but for which there are no equivalents in the
-// dylan module.
+// common-dylan module.
 
 define constant <uint>    = limited(<int>, min: 0);
 define constant <uint?>   = false-or(<uint>);
 define function uint? (object) => (bool :: <bool>) instance?(object, <uint>) end;
+
+define constant <istring-table> = <case-insensitive-string-table>;
 
 // ----------------------------------------------------------------------
 
