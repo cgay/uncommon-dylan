@@ -19,22 +19,18 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Open Dylan
         uses: dylan-lang/install-opendylan@v3
 
       - name: Update Dylan workspace
         run: |
-          dylan update
+          deft update
 
-      - name: Build test suite
+      - name: Run tests
         run: |
-          dylan build uncommon-dylan-test-suite
-
-      - name: Run test suite
-        run: |
-          _build/bin/uncommon-dylan-test-suite --report surefire --report-file _build/uncommon-dylan-tests.xml
+          deft test -- --report surefire --report-file _build/uncommon-dylan-tests.xml
 
       - name: Publish test report
         if: success() || failure()
