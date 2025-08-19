@@ -1,7 +1,7 @@
 {
     "name": "uncommon-dylan",
     "description": "General purpose utilities and a drop-in replacement for the common-dylan module which uses shorter names.",
-    "version": "0.3.0",
+    "version": "1.0.0",
     "dependencies": [],
     "dev-dependencies": [
         "sphinx-extensions",
