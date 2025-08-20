@@ -14,6 +14,8 @@ define library uncommon-dylan
     // uncommon-utils and not uncommon-dylan can still use these modules.
     export: { byte-vector,
               common-extensions,
+              dylan,
+              finalization,
               locators-protocol,
               machine-words,
               simple-format,
@@ -21,6 +23,7 @@ define library uncommon-dylan
               simple-random,
               simple-timers,
               streams-protocol,
+              threads,
               transcendentals };
   export
     uncommon-brevity,
