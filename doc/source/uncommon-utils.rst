@@ -102,6 +102,11 @@ in the Solar System.
    .. note:: The name of the class *must* start with ``<`` and end with ``>`` or it will
              not match the macro pattern.
 
+   .. note:: If you need an :drm:`initialize` method for your enum class you **must**
+             place it textually **before** the ``define enum-class`` form.  This is
+             because Open Dylan loads definitions in file order and if the
+             :drm:`initialize` method hasn't yet been loaded it will not be called when
+             the enum instances are created.
 
 Trie
 ----
