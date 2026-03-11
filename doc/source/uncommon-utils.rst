@@ -51,7 +51,7 @@ Integer-based Enums
    It is also possible to assign explicit values and names to all or some of the enum
    items. The following enum shows an example of all possible enum clause forms:
 
-   .. code::
+   .. code:: dylan
 
       define enum color ()
         $red;              // defines $red   :: <int> = 1  with name "$red"
