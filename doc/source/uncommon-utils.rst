@@ -22,9 +22,10 @@ Integer-based Enums
    value and vise versa.
 
    :macrocall:
-     .. parsed-literal:: 
-        define enum `name` ()
-          [ `clauses` ]
+     .. parsed-literal::
+
+        define enum *name* ()
+          [ *clauses* ]
         end [ enum ]
 
    Example:
@@ -51,7 +52,7 @@ Integer-based Enums
    It is also possible to assign explicit values and names to all or some of the enum
    items. The following enum shows an example of all possible enum clause forms:
 
-   .. code::
+   .. code:: dylan
 
       define enum color ()
         $red;              // defines $red   :: <int> = 1  with name "$red"
@@ -75,10 +76,11 @@ in the Solar System.
    values.
 
    :macrocall:
-     .. parsed-literal:: 
-        define enum-class `name` ()
-          [ `slots` ]
-          [ `clauses` ]
+     .. parsed-literal::
+
+        define enum-class *name* ()
+          [ *slots* ]
+          [ *clauses* ]
         end [ enum-class ]
 
    Example: define a ``<planet>`` class and a constant for each planet in the Solar
@@ -438,9 +440,9 @@ Miscellaneous
    A more concise way to increment a *place*.
 
    :macrocall:
-     .. parsed-literal:: inc!(`place`)
+     .. parsed-literal:: inc!(*place*)
 
-     .. parsed-literal:: inc!!(`place`, `by`)
+     .. parsed-literal:: inc!!(*place*, *by*)
 
    :parameter place: A Dylan variable name or, if a corresponding ``-setter`` exists, a
                      function call.
@@ -463,9 +465,9 @@ Miscellaneous
    A more concise way to decrement a *place*.
 
    :macrocall:
-     .. parsed-literal:: dec!(`place`)
+     .. parsed-literal:: dec!(*place*)
 
-     .. parsed-literal:: dec!!(`place`, `by`)
+     .. parsed-literal:: dec!!(*place*, *by*)
 
    :parameter place: A Dylan variable name or, if a corresponding ``-setter`` exists, a
                      function call.
